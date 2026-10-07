@@ -23,14 +23,14 @@ int main(void)
 		{
 			// we debounce the press (during first ms of a state change of a button the pin can have unpredictable values we mitigate this by waiting)
 			_delay_ms(5);
+			//we toggle PB0 pin in PORTB (we change its state)
+			PORTB ^= (1 << PB0);
 			//we idle while waiting for our button to release
 			while (!(PIND & (1 << PD2)))
 			{
 			}
 			// we debounce the release
 			_delay_ms(5);
-			//we toggle PB0 pin in PORTB (we change its state)
-			PORTB ^= (1 << PB0);
 		}
 	}
 }
