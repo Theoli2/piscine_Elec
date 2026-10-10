@@ -1,22 +1,17 @@
 #include <avr/io.h>
-#include <stdbool.h>
-
-#define LED (1 << PB1)
 
 int main() {
 	// We set our pins for our leds on output
-	DDRB |= LED;
+	DDRB |= (1 << PB1);
 
-	const uint32_t LOOP_CYCLE = 64;
-	const uint32_t FREQ = 2;
-	const uint32_t TAC = F_CPU / LOOP_CYCLE / FREQ;
+	const uint8_t LOOP_CYCLE = 34;
+	const uint8_t FREQ = 2;
+	const uint32_t TRIGGER = F_CPU / LOOP_CYCLE / FREQ;
 	
-	volatile uint32_t i = 0;
-	while (true) {
+	uint32_t i = 0;
+	while (1) {
 		++i;
-		if (i == TAC) {
-			PORTB ^= LED;
-			i = 0;
-		}
+		PORTB ^= (i == TRIGGER) << PB1;
+		i *= (i != TRIGGER);
 	}
 }
